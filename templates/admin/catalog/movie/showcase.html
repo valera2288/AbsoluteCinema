@@ -1,0 +1,12 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h2>Каталог для защиты</h2>
+<p>Опубликовать полные версии «Большого Бака Банни» и «Синтел», а также отдельный ролик для скачивания. Старые карточки фрагментов будут скрыты, история сохранится.</p>
+<form method="post">{% csrf_token %}<input type="hidden" name="action" value="defense"><div class="submit-row"><input type="submit" value="Опубликовать каталог для защиты" class="default"></div></form>
+<p>Добавьте вымышленные фильмы с оригинальными постерами, учебным видео и помеченными демонстрационными отзывами. Карточки с совпадающими названиями не меняются.</p>
+<form method="post">{% csrf_token %}<div class="submit-row"><input type="submit" value="Наполнить витрину" class="default"></div></form>
+<p><a href="{% url 'admin:catalog_movie_changelist' %}">К списку фильмов</a></p>
+<h2>Открытые фильмы Blender Foundation</h2>
+<p>Опубликовать фильмы с официальными трейлерами и короткими фрагментами. Учебные карточки со старым роликом будут сняты с публикации; их история и отзывы сохранятся.</p>
+<form method="post">{% csrf_token %}<input type="hidden" name="action" value="open_films"><div class="submit-row"><input type="submit" value="Опубликовать открытые фильмы" class="default"></div></form>
+{% endblock %}

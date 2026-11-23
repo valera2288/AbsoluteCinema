@@ -1,0 +1,8 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<p>{{ description }}</p>
+<form method="post">{% csrf_token %}
+  {% if token %}<input name="token" type="hidden" value="{{ token }}">{% endif %}
+  <div class="submit-row"><input class="default" type="submit" value="{{ submit_label }}"></div>
+</form>
+{% endblock %}

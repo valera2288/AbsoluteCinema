@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Каталог · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="page-heading"><p class="eyebrow">Фильмы</p><h1>Каталог</h1><p>Найдите фильм по названию или выберите жанры и год.</p></div>
+  <form method="get" class="catalog-form">
+    <div class="catalog-search">
+      {{ form.q.label_tag }}
+      <div class="filter-field">{{ form.q }}</div>
+      <button class="button" type="submit">Найти</button>
+      {{ form.q.errors }}
+    </div>
+    <details class="filters"{% if form.errors or request.GET.genre or request.GET.year or request.GET.min_rating or request.GET.sort %} open{% endif %}>
+      <summary>Фильтры и сортировка</summary>
+      <div class="filter-grid">
+        {% for field in form %}
+          {% if field.name == "q" %}
+          {% elif field.name == "genre" %}
+            <fieldset><legend>{{ field.label }}</legend>{{ field }}<div id="id_genre_errors">{{ field.errors }}</div></fieldset>
+          {% else %}
+            <div class="filter-field">{{ field.label_tag }}{{ field }}{{ field.errors }}
+              {% if field.help_text %}<small id="{{ field.auto_id }}_helptext">{{ field.help_text }}</small>{% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="filter-actions"><button class="button">Показать фильмы</button><a href="{% url 'catalog' %}">Сбросить</a></div>
+    </details>
+  </form>
+  {% if form.errors %}<p role="alert">Исправьте параметры поиска.</p>
+  {% elif page.object_list %}
+    <p class="results-count">Найдено: <strong>{{ page.paginator.count }}</strong></p>
+    {% include "components/movie_grid.html" with movies=page.object_list %}
+    {% if links %}<nav class="pagination" aria-label="Страницы каталога">
+      <span>Страница {{ page.number }} из {{ page.paginator.num_pages }}</span>
+      {% for label, query in links %}<a href="?{{ query }}">{{ label }}</a>{% endfor %}
+    </nav>{% endif %}
+  {% else %}<div class="empty"><strong>Фильмы не найдены</strong><p>Попробуйте другое название или сбросьте фильтры.</p><a href="{% url 'catalog' %}">Сбросить поиск</a></div>{% endif %}
+</section>
+<script src="{% static 'js/catalog.js' %}" defer></script>
+{% endblock %}

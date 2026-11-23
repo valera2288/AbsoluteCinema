@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="panel account-panel">
+  <h1>Открыта служебная сессия</h1>
+  <p>Чтобы войти в зрительский кабинет в этой вкладке, сначала выйдите из Django Admin.</p>
+  <form method="post" action="{% url 'viewer-logout' %}">{% csrf_token %}<button class="button">Выйти</button></form>
+</section>
+{% endblock %}

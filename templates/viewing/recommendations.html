@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Рекомендации · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <a href="{% url 'viewer-dashboard' %}">← В кабинет</a><h1>Рекомендации</h1>
+  {% if not request.viewer_device.active_profile_id %}<p class="empty">Сначала выберите профиль в кабинете.</p>
+  {% elif not entitled %}<p class="empty">Подборка доступна с подпиской. <a href="{% url 'tariffs' %}">Посмотреть тарифы</a></p>
+  {% elif movies %}
+    <p>{% if fallback %}Доступные новинки, которые вы ещё не смотрели.{% else %}По жанрам из вашей истории и избранного.{% endif %}</p>
+    {% include "components/movie_grid.html" %}
+  {% else %}<p class="empty">Пока нет новых фильмов для этого профиля.</p>{% endif %}
+</section>
+{% endblock %}

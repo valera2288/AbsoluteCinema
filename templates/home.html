@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<section class="hero{% if featured.banner %} hero-with-banner{% endif %}">
+  {% if featured.banner %}
+    <img class="hero-image" alt="" src="{% url 'movie-media' featured.pk featured.banner.pk featured.banner.version_id %}">
+  {% else %}
+    <img class="hero-art" alt="" src="{% static 'images/cinema-hero.svg' %}" width="640" height="520">
+  {% endif %}
+  <div class="hero-copy">
+    {% if featured %}
+      <p class="eyebrow">В центре внимания</p>
+      <h1>{{ featured.title }}</h1>
+      <p class="metadata"><span>{{ featured.release_year }}</span><span>{{ featured.duration_min }} мин</span><span class="tag">{{ featured.age_rating }}+</span></p>
+      <p class="hero-description">{{ featured.description|truncatechars:170 }}</p>
+      <div class="hero-actions"><a class="button" href="{% url 'movie-detail' featured.pk %}">Открыть фильм <span aria-hidden="true">↗</span></a><a class="button button-secondary" href="{% url 'catalog' %}">Каталог</a></div>
+    {% else %}
+      <p class="eyebrow">Онлайн-кинотеатр</p>
+      <h1>{{ site_name }}</h1>
+      <p class="hero-description">Фильмы, трейлеры и отдельный профиль для каждого зрителя.</p>
+      <div class="hero-actions"><a class="button" href="{% url 'catalog' %}">Перейти в каталог <span aria-hidden="true">↗</span></a><a class="button button-secondary" href="{% url 'tariffs' %}">Тарифы</a></div>
+    {% endif %}
+  </div>
+</section>
+<nav class="home-shortcuts" aria-label="Быстрые переходы">
+  <a href="{% url 'catalog' %}"><strong>Каталог</strong><span>Поиск по названию и жанрам</span><span class="shortcut-arrow" aria-hidden="true">↗</span></a>
+  <a href="{% url 'tariffs' %}"><strong>Тарифы</strong><span>Цены и условия подписки</span><span class="shortcut-arrow" aria-hidden="true">↗</span></a>
+  <a href="{% if request.viewer_device %}{% url 'viewer-dashboard' %}{% else %}{% url 'viewer-login' %}{% endif %}"><strong>Личный кабинет</strong><span>Профили и устройства</span><span class="shortcut-arrow" aria-hidden="true">↗</span></a>
+</nav>
+<section class="section">
+  <div class="section-heading"><h2>Новинки</h2><a href="{% url 'catalog' %}">Весь каталог <span aria-hidden="true">→</span></a></div>
+  {% if movies %}{% include "components/movie_grid.html" %}{% else %}<div class="empty home-empty"><strong>Опубликованных фильмов пока нет.</strong></div>{% endif %}
+</section>
+{% endblock %}

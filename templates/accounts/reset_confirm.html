@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="panel account-panel">
+  <h1>Новый пароль</h1>
+  {% if validlink %}
+    {% include "accounts/_form.html" with submit_label="Сохранить пароль" %}
+  {% else %}
+    <p>Ссылка истекла или уже использована.</p>
+    <a href="{% url 'viewer-reset' %}">Запросить новую ссылку</a>
+  {% endif %}
+</section>
+{% endblock %}

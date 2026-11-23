@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Обращение №{{ ticket.pk }} · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <a href="{% url 'support' %}">← К обращениям</a>
+  <p class="eyebrow">№{{ ticket.pk }} · {{ ticket.get_status_display }}</p><h1>{{ ticket.subject }}</h1>
+  <div class="review-list">{% include "operations/messages.html" %}</div>
+</section>
+{% endblock %}

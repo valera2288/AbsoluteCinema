@@ -1,0 +1,16 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h2>{{ movie.title }}</h2>
+{% if error %}<p class="errornote" role="alert">{{ error }}</p>{% endif %}
+<form method="post">
+  {% csrf_token %}
+  {% if movie.is_published %}
+    <p>После снятия карточка и публичные медиа будут недоступны гостям.</p>
+    <div class="submit-row"><input type="hidden" name="action" value="unpublish"><input type="submit" class="default" value="Подтвердить снятие"></div>
+  {% else %}
+    <p>Для публикации нужен действующий жанр, постер, трейлер и полное видео.</p>
+    <div class="submit-row"><input type="hidden" name="action" value="publish"><input type="submit" class="default" value="Опубликовать"></div>
+  {% endif %}
+  <a href="{% url 'admin:catalog_movie_changelist' %}">Назад к фильмам</a>
+</form>
+{% endblock %}

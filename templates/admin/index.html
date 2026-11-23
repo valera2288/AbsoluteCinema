@@ -1,0 +1,19 @@
+{% extends "admin/index.html" %}
+{% block content %}
+<section class="workspace-intro">
+  <p>РАБОЧЕЕ ПРОСТРАНСТВО</p>
+  <h2>Управление кинотеатром</h2>
+  <div class="workspace-shortcuts">
+    {% if perms.catalog.view_movie %}<a href="{% url 'admin:catalog_movie_changelist' %}">Фильмы <span aria-hidden="true">↗</span></a>{% endif %}
+    {% if perms.billing.view_payment %}<a href="{% url 'admin:billing_payment_changelist' %}">Платежи <span aria-hidden="true">↗</span></a>{% endif %}
+    {% if perms.catalog.view_review_queue %}<a href="{% url 'moderation-queue' %}">Модерация <span aria-hidden="true">↗</span></a>{% endif %}
+    {% if perms.operations.view_auditentry %}<a href="{% url 'admin:operations_auditentry_changelist' %}">Журнал <span aria-hidden="true">↗</span></a>{% endif %}
+    {% if perms.operations.view_supportrequest %}<a href="{% url 'admin:operations_supportrequest_changelist' %}">Поддержка <span aria-hidden="true">↗</span></a>{% endif %}
+    {% if perms.operations.export_reports %}<a href="{% url 'admin:operations_reports' %}">Отчёты <span aria-hidden="true">↗</span></a>{% endif %}
+    {% if perms.operations.send_test_newsletter %}<a href="{% url 'admin:operations_newsletter' %}">Рассылка <span aria-hidden="true">↗</span></a>{% endif %}
+    {% if perms.operations.run_backup %}<a href="{% url 'admin:operations_run_backup' %}">Создать копию <span aria-hidden="true">↗</span></a>{% endif %}
+    {% if user.is_superuser %}<a href="{% url 'admin:operations_demo' %}">Учебные данные <span aria-hidden="true">↗</span></a>{% endif %}
+  </div>
+</section>
+{{ block.super }}
+{% endblock %}

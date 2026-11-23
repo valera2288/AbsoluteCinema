@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="panel account-panel">
+  <h1>{{ title }}</h1>
+  {% include "accounts/_form.html" %}
+  <p><a href="{% if request.viewer_device %}{% url 'viewer-dashboard' %}{% else %}{% url 'viewer-login' %}{% endif %}">Назад</a></p>
+</section>
+{% endblock %}

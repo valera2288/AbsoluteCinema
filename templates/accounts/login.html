@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Вход · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="panel account-panel">
+  <p class="eyebrow">Личный кабинет</p>
+  <h1>Вход</h1>
+  {% include "accounts/_form.html" with submit_label="Войти" %}
+  <p><a href="{% url 'viewer-register' %}">Создать аккаунт</a> · <a href="{% url 'viewer-reset' %}">Восстановить пароль</a></p>
+</section>
+{% endblock %}

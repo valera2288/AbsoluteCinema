@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ movie.title }} · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="section watch-player" data-movie="{{ movie.pk }}" data-device="{{ request.viewer_device.pk }}" data-profile="{{ request.viewer_device.active_profile_id|default_if_none:'' }}" data-intent="{% url 'watch-intent' movie.pk %}" data-start="{% url 'watch-start' %}">
+  <a href="{% url 'movie-detail' movie.pk %}">← К фильму</a>
+  <h1>{{ movie.title }}</h1>
+  <div hidden>{% csrf_token %}</div>
+  <video controls preload="metadata" aria-label="{{ movie.title }}"></video>
+  <p class="notice" data-status role="status">Подключаем плеер…</p>
+  <div class="account-actions">
+    <label hidden>Качество <select data-quality></select></label>
+    <label hidden>Субтитры <select data-subtitles></select></label>
+    <button class="button button-secondary" type="button" data-retry>Повторить</button>
+    <button class="button button-secondary" type="button" data-restart disabled>Начать заново</button>
+    <a href="{% url 'viewer-dashboard' %}">Профили и устройства</a>
+    <a href="{% url 'tariffs' %}">Тарифы</a>
+  </div>
+  <noscript><p>Для работы плеера включите JavaScript.</p></noscript>
+</section>
+<script src="{% static 'js/player.js' %}" defer></script>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<p>Операция: {{ payment.operation_id }} · {{ payment.amount }} ₽</p>
+<p>{% if payment.amount %}Полный тестовый возврат прекращает доступ по текущей подписке.{% else %}Бесплатный период завершится без денежного возврата.{% endif %}</p>
+<form method="post">{% csrf_token %}<div class="submit-row"><input type="submit" class="default" value="Подтвердить"></div></form>
+<p><a href="{% url 'admin:billing_payment_changelist' %}">К платежам</a></p>
+{% endblock %}

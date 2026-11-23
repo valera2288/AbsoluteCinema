@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Уведомления · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <a href="{% url 'viewer-dashboard' %}">← В кабинет</a><h1>Уведомления</h1>
+  <article class="account-card"><h2>Рассылки</h2>
+    <p>Отключение рассылок не влияет на уведомления о платежах, поддержке и отзывах.</p>
+    {% include "accounts/_form.html" with submit_label="Сохранить настройку" %}
+  </article>
+  <div class="review-list">
+    {% for item in page %}
+      <article class="account-card{% if not item.is_read %} is-current{% endif %}">
+        <h2>{{ item.subject }}</h2><p>{{ item.text }}</p><p>{{ item.sent_at|date:"d.m.Y H:i" }}</p>
+        {% if not item.is_read %}
+          <form method="post" action="{% url 'notification-read' item.pk %}">{% csrf_token %}<button class="link-button">Отметить прочитанным</button></form>
+        {% endif %}
+      </article>
+    {% empty %}<p class="empty">Уведомлений пока нет.</p>{% endfor %}
+  </div>
+  {% include "operations/pagination.html" %}
+</section>
+{% endblock %}

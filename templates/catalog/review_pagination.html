@@ -1,0 +1,4 @@
+{% if links %}<nav class="pagination" aria-label="Страницы">
+  <span>Страница {{ page.number }} из {{ page.paginator.num_pages }}</span>
+  {% for label, query in links %}<a href="?{{ query }}">{{ label }}</a>{% endfor %}
+</nav>{% endif %}

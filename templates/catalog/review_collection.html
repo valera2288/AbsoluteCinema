@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <a href="{% url 'viewer-dashboard' %}">← В кабинет</a><h1>{{ title }}</h1>
+  {% if movies %}{% include "components/movie_grid.html" %}
+  {% elif author_reviews %}
+    <div class="review-list">{% for review in author_reviews %}
+      <article class="account-card">
+        <h3><a href="{% url 'movie-detail' review.movie_id %}#reviews">{{ review.movie.title }}</a></h3>
+        <p>{{ review.rating }}/5 · {{ review.get_moderation_status_display|default:"Оценка без текста" }}</p>
+        {% if review.text %}<p>{{ review.text|linebreaksbr }}</p>{% endif %}
+        {% if review.reason %}<p>Причина: {{ review.reason }}</p>{% endif %}
+      </article>
+    {% endfor %}</div>
+  {% else %}<p class="empty">У активного профиля пока нет записей в этом разделе.</p>{% endif %}
+  {% include "catalog/review_pagination.html" %}
+</section>
+{% endblock %}

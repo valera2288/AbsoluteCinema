@@ -1,0 +1,4 @@
+Для смены пароля Absolute Cinema откройте ссылку в течение 30 минут:
+{{ protocol }}://{{ domain }}{% url 'viewer-reset-confirm' uidb64=uid token=token %}
+
+Если вы не запрашивали смену пароля, проигнорируйте это письмо.

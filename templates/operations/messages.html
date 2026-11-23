@@ -1,0 +1,7 @@
+{% for entry in entries %}
+<article class="account-card">
+  <strong>{{ entry.get_author_kind_display }}</strong> · {{ entry.created_at|date:"d.m.Y H:i" }}
+  {% if entry.reply_code %}<p>{{ entry.get_reply_code_display }}</p>{% endif %}
+  {% if entry.body %}<p>{{ entry.body|linebreaksbr }}</p>{% endif %}
+</article>
+{% endfor %}

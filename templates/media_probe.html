@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Пробный просмотр | {{ site_name }}{% endblock %}
+{% block content %}
+  <section class="panel">
+    <p class="eyebrow">Учебный стенд</p>
+    <h1>Пробный просмотр</h1>
+    <p>Страница для проверки воспроизведения, перемотки и отзыва доступа.</p>
+    <video controls preload="metadata" aria-label="Пробное видео">
+      <source src="{% url 'media-probe-video' %}" type="video/mp4">
+      Браузер не поддерживает встроенное видео.
+    </video>
+  </section>
+{% endblock %}

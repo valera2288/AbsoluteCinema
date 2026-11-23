@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}{{ movie.title }} · {{ site_name }}{% endblock %}
+{% block content %}
+<div class="breadcrumb"><a href="{% url 'catalog' %}">← К каталогу</a></div>
+<section class="movie-detail">
+  <div>
+    {% if movie.poster %}<img class="poster" alt="" src="{% url 'movie-media' movie.pk movie.poster.pk movie.poster.version_id %}">{% else %}<span class="poster placeholder" aria-hidden="true">▶</span>{% endif %}
+  </div>
+  <div>
+    <p class="eyebrow">Карточка фильма</p>
+    <h1>{{ movie.title }}</h1>
+    <p class="metadata"><span>{{ movie.release_year }}</span><span>{{ movie.duration_min }} мин</span><span class="tag">{{ movie.age_rating }}+</span></p>
+    {% if genres %}<ul class="genre-list" aria-label="Жанры">{% for genre in genres %}<li class="tag">{{ genre.name }}</li>{% endfor %}</ul>{% endif %}
+    {% if has_video %}
+      <div class="hero-actions">
+        {% if entitled or not request.viewer_device %}
+          <a class="button" href="{% url 'watch-player' movie.pk %}">Открыть плеер</a>
+        {% else %}
+          <a class="button" href="{% url 'tariffs' %}">Выбрать подписку</a>
+        {% endif %}
+        {% for item in downloads %}<a class="button button-secondary" href="{% url 'watch-download' movie.pk item.pk %}">Скачать{% if item.variant != "default" %} · {{ item.variant }}{% endif %}</a>{% endfor %}
+      </div>
+    {% endif %}
+    <div class="film-description"><h2>О фильме</h2><p>{{ movie.description|linebreaksbr }}</p></div>
+    {% if movie.trailer %}
+      <section class="trailer-section"><h2>Трейлер</h2>
+      <video controls preload="metadata" aria-label="Трейлер фильма {{ movie.title }}"{% if movie.banner %} poster="{% url 'movie-media' movie.pk movie.banner.pk movie.banner.version_id %}"{% endif %}>
+        <source src="{% url 'movie-media' movie.pk movie.trailer.pk movie.trailer.version_id %}" type="video/mp4">
+      </video></section>
+    {% endif %}
+  </div>
+</section>
+<section class="section" id="reviews">
+  <div class="section-heading"><h2>Оценки и отзывы</h2>
+    <span class="tag">{% if movie.rating_count %}★ {{ movie.average_rating|floatformat:1 }} / 5 · Голосов: {{ movie.rating_count }}{% else %}Нет оценок{% endif %}</span>
+  </div>
+  {% if request.viewer_device.active_profile_id %}
+    <div class="account-actions review-actions">
+      {% if favorited %}
+        <form method="post" action="{% url 'movie-favorite' movie.pk 'remove' %}">{% csrf_token %}<button class="button button-secondary">Убрать из избранного</button></form>
+      {% else %}
+        <form method="post" action="{% url 'movie-favorite' movie.pk 'add' %}">{% csrf_token %}<button class="button button-secondary">В избранное</button></form>
+      {% endif %}
+      <a class="button button-secondary" href="{% url 'movie-review' movie.pk 'rate' %}">{% if own_review %}Изменить оценку{% else %}Оценить{% endif %}</a>
+      {% if user.can_post_reviews %}<a class="button" href="{% url 'movie-review' movie.pk 'text' %}">{% if own_review.text %}Редактировать отзыв{% else %}Написать отзыв{% endif %}</a>{% endif %}
+      {% if own_review.text %}<a class="link-button button-danger" href="{% url 'movie-review' movie.pk 'clear' %}">Удалить текст</a>{% endif %}
+    </div>
+    {% if not user.can_post_reviews %}<p>Текстовые отзывы для аккаунта ограничены. Оценки доступны.</p>{% endif %}
+    {% if own_review %}<p>Ваша оценка: {{ own_review.rating }} из 5{% if own_review.moderation_status %} · {{ own_review.get_moderation_status_display }}{% endif %}{% if own_review.reason %}. Причина: {{ own_review.reason }}{% endif %}</p>{% endif %}
+  {% else %}
+    <p><a href="{% url 'viewer-login' %}?next={{ request.path|urlencode }}">Войдите</a>, чтобы оценить фильм или оставить отзыв.</p>
+  {% endif %}
+  <div class="review-list">
+    {% for review in review_page %}
+      <article class="account-card"><h3>{{ review.profile.profile_name }} <span class="tag">{{ review.rating }}/5</span></h3><p>{{ review.text|linebreaksbr }}</p></article>
+    {% empty %}<p class="empty">Опубликованных отзывов пока нет.</p>{% endfor %}
+  </div>
+  {% if review_page.has_other_pages %}<nav class="pagination" aria-label="Страницы отзывов">
+    {% if review_page.has_previous %}<a href="?reviews_page={{ review_page.previous_page_number }}#reviews">Назад</a>{% endif %}
+    <span>{{ review_page.number }} из {{ review_page.paginator.num_pages }}</span>
+    {% if review_page.has_next %}<a href="?reviews_page={{ review_page.next_page_number }}#reviews">Далее</a>{% endif %}
+  </nav>{% endif %}
+</section>
+{% endblock %}

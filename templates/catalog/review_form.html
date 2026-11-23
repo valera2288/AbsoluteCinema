@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="panel account-panel">
+  <p class="eyebrow">{{ movie.title }}</p><h1>{{ title }}</h1>
+  {% if title == "Удалить текст отзыва" %}<p>Оценка сохранится и снова будет учитываться без текста.</p>{% endif %}
+  {% include "accounts/_form.html" %}
+  <a href="{% url 'movie-detail' movie.pk %}#reviews">← К отзывам фильма</a>
+</section>
+{% endblock %}

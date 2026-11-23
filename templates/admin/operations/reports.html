@@ -1,0 +1,15 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<form method="get">
+  {{ form.as_p }}
+  <div class="submit-row">
+    <input class="default" type="submit" value="Показать">
+    <button type="submit" name="format" value="csv">CSV</button>
+    <button type="submit" name="format" value="xlsx">XLSX</button>
+  </div>
+</form>
+{% if headers %}
+<div class="results"><table><thead><tr>{% for cell in headers %}<th scope="col">{{ cell }}</th>{% endfor %}</tr></thead>
+<tbody>{% for row in rows %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}</tbody></table></div>
+{% endif %}
+{% endblock %}

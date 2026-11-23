@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}История просмотров · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <a href="{% url 'viewer-dashboard' %}">← В кабинет</a>
+  <h1>История просмотров</h1>
+  {% include "viewing/history_cards.html" with rows=page.object_list %}
+  {% if page.has_other_pages %}<nav class="pagination" aria-label="Страницы истории">
+    {% if page.has_previous %}<a href="?page={{ page.previous_page_number }}">Назад</a>{% endif %}
+    <span>{{ page.number }} из {{ page.paginator.num_pages }}</span>
+    {% if page.has_next %}<a href="?page={{ page.next_page_number }}">Далее</a>{% endif %}
+  </nav>{% endif %}
+</section>
+{% endblock %}

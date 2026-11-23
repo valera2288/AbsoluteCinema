@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Тестовый платёж · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="panel account-panel">
+  <p class="eyebrow">Имитатор оплаты</p><h1>{{ payment.get_status_display }}</h1>
+  <p>{{ payment.subscription.tariff_name }}</p><p class="price">{{ payment.amount }} ₽</p>
+  {% if payment.status == "pending" %}
+    <p>Выберите учебный результат. Данные банковской карты не нужны.</p>
+    <form method="post" class="account-actions">
+      {% csrf_token %}<button class="button" name="result" value="success">Подтвердить оплату</button>
+      <button class="button button-secondary" name="result" value="decline">Отклонить оплату</button>
+    </form>
+  {% elif payment.status == "declined" and payment.subscription.status == "pending" and not payment.subscription.renewal_of_id %}
+    <a class="button" href="{% url 'billing-checkout' payment.subscription.tariff_id %}{% if payment.subscription.promo_id or payment.subscription.auto_renew %}?promo={{ payment.subscription.promo.code|default:''|urlencode }}{% if payment.subscription.auto_renew %}&amp;auto_renew=on{% endif %}{% endif %}">Повторить оформление</a>
+  {% endif %}
+  <p><a href="{% url 'billing-overview' %}">Подписка и история платежей</a></p>
+</section>
+{% endblock %}

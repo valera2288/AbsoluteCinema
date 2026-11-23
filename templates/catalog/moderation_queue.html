@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Модерация · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <p class="eyebrow">Рабочая очередь</p><h1>Модерация отзывов</h1>
+  <form method="get" class="catalog-form">
+    <div class="filter-grid">{% for field in form %}<div class="filter-field">{{ field.label_tag }}{{ field }}{{ field.errors }}</div>{% endfor %}</div>
+    <button class="button">Показать</button>
+  </form>
+  <div class="review-list">{% for review in page %}
+    <article class="account-card">
+      <h2>{{ review.movie.title }}</h2>
+      <p>{{ review.profile.profile_name }} · {{ review.rating }}/5 · {{ review.submitted_at|date:"d.m.Y H:i" }} · {{ review.get_moderation_status_display }}</p>
+      <p>{{ review.text|linebreaksbr }}</p>
+      {% if review.reason %}<p>Причина: {{ review.reason }}</p>{% endif %}
+      <div class="account-actions">
+        {% if review.moderation_status == "pending" and perms.catalog.decide_review %}
+          <a href="{% url 'moderation-decision' review.pk 'publish' %}">Опубликовать</a>
+          <a href="{% url 'moderation-decision' review.pk 'reject' %}">Отклонить</a>
+        {% elif review.moderation_status == "published" and perms.catalog.remove_review %}
+          <a href="{% url 'moderation-decision' review.pk 'remove' %}">Снять с публикации</a>
+        {% endif %}
+        {% if perms.accounts.restrict_review_authors %}
+          <form method="post" action="{% url 'moderation-author' review.pk %}">{% csrf_token %}
+            {% if review.profile.user.can_post_reviews %}<button class="link-button" name="action" value="restrict">Ограничить автора</button>
+            {% else %}<button class="link-button" name="action" value="allow">Разрешить автору писать отзывы</button>{% endif %}
+          </form>
+        {% endif %}
+      </div>
+    </article>
+  {% empty %}<p class="empty">Отзывов по выбранным условиям нет.</p>{% endfor %}</div>
+  {% include "catalog/review_pagination.html" %}
+</section>
+{% endblock %}

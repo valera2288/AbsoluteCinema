@@ -1,0 +1,9 @@
+<a class="link-button" href="{% url 'catalog' %}"{% if request.resolver_match.url_name == 'catalog' %} aria-current="page"{% endif %}>Каталог</a>
+<a class="link-button" href="{% url 'tariffs' %}"{% if request.resolver_match.url_name == 'tariffs' %} aria-current="page"{% endif %}>Тарифы</a>
+{% if request.viewer_device %}
+<a class="link-button" href="{% url 'viewer-dashboard' %}"{% if request.resolver_match.url_name == 'viewer-dashboard' %} aria-current="page"{% endif %}>Кабинет</a>
+{% else %}
+<a class="link-button" href="{% url 'viewer-login' %}"{% if request.resolver_match.url_name == 'viewer-login' %} aria-current="page"{% endif %}>Войти</a>
+{% endif %}
+{% if perms.catalog.view_review_queue %}<a class="link-button" href="{% url 'moderation-queue' %}"{% if request.resolver_match.url_name == 'moderation-queue' %} aria-current="page"{% endif %}>Модерация</a>{% endif %}
+{% if user.is_authenticated and user.is_staff %}<a class="link-button" href="{% url 'admin:index' %}">Администрирование</a>{% endif %}

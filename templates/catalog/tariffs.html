@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Тарифы · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="section"><div class="page-heading"><p class="eyebrow">Подписка</p><h1>Тарифы</h1><p>Выберите тариф для учебного оформления. Реальные деньги не списываются.</p></div>
+  <div class="tariff-grid">
+    {% for tariff in tariffs %}
+      <article class="tariff"><h2>{{ tariff.name }}</h2><p class="price">{{ tariff.price }} ₽</p>
+        <dl><dt>Срок, дней</dt><dd>{{ tariff.period_days }}</dd><dt>Одновременные просмотры</dt><dd>{{ tariff.max_streams }}</dd></dl>
+        {% if tariff.description %}<p>{{ tariff.description }}</p>{% endif %}
+        <a class="button" href="{% url 'billing-checkout' tariff.pk %}">Выбрать тариф</a>
+      </article>
+    {% empty %}<p class="empty">Доступных тарифов пока нет.</p>{% endfor %}
+  </div>
+</section>
+{% endblock %}

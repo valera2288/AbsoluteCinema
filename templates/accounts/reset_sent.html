@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="panel account-panel">
+  <h1>Запрос принят</h1>
+  <p>Если адрес связан с активным аккаунтом, на него отправлена ссылка для восстановления.</p>
+  <a href="{% url 'viewer-login' %}">Вернуться ко входу</a>
+</section>
+{% endblock %}

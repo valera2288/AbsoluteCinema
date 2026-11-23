@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="panel account-panel">
+  <p class="eyebrow">{{ review.movie.title }}</p><h1>{{ title }}</h1>
+  <p>{{ review.profile.profile_name }} · {{ review.rating }}/5</p><p>{{ review.text|linebreaksbr }}</p>
+  {% if can_decide %}{% include "accounts/_form.html" %}{% else %}<p>Отзыв изменился. Вернитесь в очередь.</p>{% endif %}
+  <a href="{% url 'moderation-queue' %}">← В очередь</a>
+</section>
+{% endblock %}

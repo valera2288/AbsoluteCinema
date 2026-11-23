@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Оформление · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="panel account-panel">
+  <p class="eyebrow">Учебная подписка</p><h1>{{ tariff.name }}</h1>
+  <p>{{ tariff.period_days }} дней · до {{ tariff.max_streams }} одновременных просмотров</p>
+  <p>Базовая цена: {{ tariff.price }} ₽</p>
+  <form method="get" class="account-form">
+    {{ form.as_p }}
+    <button type="submit" class="button button-secondary">Рассчитать</button>
+  </form>
+  {% if token %}
+  <dl><dt>Скидка</dt><dd>{{ terms.discount }} ₽</dd><dt>К оплате</dt><dd class="price">{{ amount }} ₽</dd></dl>
+  <form method="post">
+    {% csrf_token %}<input type="hidden" name="token" value="{{ token }}">
+    <button class="button">Подтвердить оформление</button>
+  </form>
+  {% elif without_promo %}
+  <form method="post">
+    {% csrf_token %}<input type="hidden" name="token" value="{{ without_promo }}">
+    <button class="button">Оформить без промокода за {{ tariff.price }} ₽</button>
+  </form>
+  {% endif %}
+  <p><a href="{% url 'tariffs' %}">К тарифам</a></p>
+</section>
+{% endblock %}

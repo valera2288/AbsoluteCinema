@@ -1,0 +1,11 @@
+<ul class="movie-grid">
+  {% for movie in movies %}
+    <li><a class="movie-tile" href="{% url 'movie-detail' movie.pk %}">
+      <span class="tile-art">
+        {% if movie.poster %}<img class="poster" alt="" loading="lazy" src="{% url 'movie-media' movie.pk movie.poster.pk movie.poster.version_id %}">{% else %}<span class="poster placeholder" aria-hidden="true">▶</span>{% endif %}
+        <span class="tile-age tag">{{ movie.age_rating }}+</span>
+      </span>
+      <span class="tile-copy"><strong>{{ movie.title }}</strong><span>{{ movie.release_year }} · {{ movie.duration_min }} мин{% if movie.rating_count %} · ★ {{ movie.average_rating|floatformat:1 }}{% endif %}</span></span>
+    </a></li>
+  {% endfor %}
+</ul>

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Кабинет · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="section account-dashboard">
+  <div class="page-heading">
+    <p class="eyebrow">{{ user.get_short_name }}</p>
+    <h1>Личный кабинет</h1>
+    <p>{% if device.active_profile %}Активный профиль: <strong>{{ device.active_profile.profile_name }}</strong>{% else %}Выберите профиль, чтобы продолжить.{% endif %}</p>
+  </div>
+  <nav class="dashboard-nav" aria-label="Разделы кабинета">
+    <a class="button" href="{% url 'billing-overview' %}">Подписка и платежи</a>
+    <a class="button button-secondary" href="{% url 'viewer-collection' 'favorites' %}">Избранное</a>
+    <a class="button button-secondary" href="{% url 'viewer-collection' 'reviews' %}">Мои отзывы</a>
+    <a class="button button-secondary" href="{% url 'viewer-recommendations' %}">Рекомендации</a>
+    <a class="button button-secondary" href="{% url 'notification-inbox' %}">Уведомления</a>
+    <a class="button button-secondary" href="{% url 'support' %}">Поддержка</a>
+    <a class="button button-secondary" href="{% url 'viewer-details' %}">Данные аккаунта</a>
+    <a class="button button-secondary" href="{% url 'viewer-password' %}">Сменить пароль</a>
+    <form method="post" action="{% url 'viewer-logout' %}">{% csrf_token %}<button class="button button-secondary">Выйти</button></form>
+  </nav>
+  <h2>Продолжить просмотр</h2>
+  {% include "viewing/history_cards.html" with rows=continuing %}
+  <p><a class="button button-secondary" href="{% url 'watch-history' %}">Вся история просмотров <span aria-hidden="true">→</span></a></p>
+  <h2>Профили</h2>
+  <div class="account-cards">
+    {% for profile in profiles %}
+      <article class="account-card{% if profile.pk == device.active_profile_id %} is-current{% endif %}">
+        <h3>{{ profile.profile_name }}</h3>
+        <p>{% if profile.is_kids %}Детский · до 12+{% if profile.pin_hash %} · PIN включён{% endif %}{% else %}Взрослый{% endif %}{% if profile.pk == device.active_profile_id %} · Активный{% endif %}</p>
+        <div class="account-actions">
+          {% if profile.pk != device.active_profile_id %}<a class="link-button" href="{% url 'viewer-profile' profile.pk 'switch' %}">Выбрать</a>{% endif %}
+          <a class="link-button" href="{% url 'viewer-profile' profile.pk 'rename' %}">Переименовать</a>
+          {% if profile.is_kids %}<a class="link-button" href="{% url 'viewer-profile' profile.pk 'pin' %}">Настроить PIN</a>{% endif %}
+          {% if profiles|length > 1 %}<a class="link-button button-danger" href="{% url 'viewer-profile' profile.pk 'delete' %}">Удалить</a>{% endif %}
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+  {% if profiles|length < 5 %}<p><a class="button" href="{% url 'viewer-profile-create' %}">Добавить профиль</a></p>{% endif %}
+  <h2>Устройства</h2>
+  <div class="account-cards">
+    {% for entry in devices %}
+      <article class="account-card">
+        <h3>{{ entry.name }}{% if entry.pk == device.pk %} · Текущее{% endif %}</h3>
+        <p>Последняя активность: {{ entry.last_seen_at|date:"d.m.Y H:i" }}</p>
+        <form method="post" action="{% url 'viewer-revoke' entry.pk %}">{% csrf_token %}<button class="link-button">Завершить сеанс</button></form>
+      </article>
+    {% endfor %}
+  </div>
+  <p><a class="link-button button-danger" href="{% url 'viewer-delete' %}">Удалить аккаунт</a></p>
+</section>
+{% endblock %}

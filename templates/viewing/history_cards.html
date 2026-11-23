@@ -1,0 +1,9 @@
+<div class="account-cards">
+{% for row in rows %}
+  <article class="account-card">
+    <h3><a href="{% url 'movie-detail' row.movie_id %}">{{ row.movie.title }}</a></h3>
+    {% if row.is_completed %}<p>Просмотрен</p>{% else %}<p>Позиция: {{ row.progress_sec }} сек.</p>{% endif %}
+    <a class="link-button" href="{% url 'watch-player' row.movie_id %}">{% if row.is_completed %}Открыть плеер{% else %}Продолжить{% endif %}</a>
+  </article>
+{% empty %}<p class="empty">Здесь появятся фильмы этого профиля.</p>{% endfor %}
+</div>

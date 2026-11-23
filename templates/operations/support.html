@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Поддержка · {{ site_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <a href="{% url 'viewer-dashboard' %}">← В кабинет</a><h1>Поддержка</h1>
+  <div class="account-cards">
+    <article class="account-card"><h2>Новое обращение</h2>{% include "accounts/_form.html" with submit_label="Отправить" %}</article>
+    <article class="account-card"><h2>Мои обращения</h2>
+      {% for ticket in page %}<p><a href="{% url 'support-detail' ticket.pk %}">№{{ ticket.pk }} · {{ ticket.subject }}</a><br>{{ ticket.get_status_display }}</p>
+      {% empty %}<p>Обращений пока нет.</p>{% endfor %}
+      {% include "operations/pagination.html" %}
+    </article>
+  </div>
+</section>
+{% endblock %}

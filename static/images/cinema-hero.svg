@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520" fill="none">
+  <defs>
+    <linearGradient id="rim" x1="120" y1="0" x2="550" y2="490" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#dfc5ff"/>
+      <stop offset=".5" stop-color="#a47de5"/>
+      <stop offset="1" stop-color="#58418e"/>
+    </linearGradient>
+    <radialGradient id="metal">
+      <stop stop-color="#8b65c6"/>
+      <stop offset="1" stop-color="#342749"/>
+    </radialGradient>
+    <g id="holes">
+      <circle cy="-91" r="34"/>
+      <circle cy="-91" r="34" transform="rotate(72)"/>
+      <circle cy="-91" r="34" transform="rotate(144)"/>
+      <circle cy="-91" r="34" transform="rotate(216)"/>
+      <circle cy="-91" r="34" transform="rotate(288)"/>
+    </g>
+  </defs>
+  <g stroke="#ad92dc" opacity=".26">
+    <path d="M83 100h80M83 100v80M553 418h-70m70 0v-70"/>
+    <circle cx="355" cy="240" r="202" stroke-dasharray="4 9"/>
+    <path d="M355 21v32m0 373v32M136 240h32m373 0h32"/>
+  </g>
+  <g transform="rotate(-23 320 260)">
+    <path d="M63 346c88-93 137-17 220 9 85 27 161 22 274-32l19 54c-117 56-207 62-303 30-78-25-119-88-185-18z" fill="#291e40" stroke="#9d7bcb" stroke-width="2"/>
+    <path d="M82 352c76-70 126 9 209 30 92 25 171 13 270-29" stroke="#8a65bb" opacity=".45" stroke-width="4"/>
+    <path d="M98 339c73-40 125 28 201 46 87 20 169 4 251-33m-441 14c69-31 119 31 193 47 88 19 169 5 256-34" stroke="#ba9de7" stroke-width="5" stroke-dasharray="9 14" opacity=".7"/>
+  </g>
+  <g transform="translate(355 240) rotate(17)">
+    <circle cx="11" cy="15" r="153" fill="#181326" stroke="#534072" stroke-width="8"/>
+    <circle r="151" fill="url(#metal)" stroke="url(#rim)" stroke-width="4"/>
+    <circle r="139" stroke="#c1a4e9" opacity=".5"/>
+    <use href="#holes" fill="#191326" stroke="#b28bde" stroke-width="2"/>
+    <circle r="37" fill="#47335f" stroke="#b28bde"/>
+    <circle r="14" fill="#191326" stroke="#d2b5f3" stroke-width="2"/>
+  </g>
+  <g fill="#d3b3f7" opacity=".75">
+    <circle cx="122" cy="247" r="3"/><circle cx="516" cy="99" r="3"/><circle cx="518" cy="422" r="3"/>
+    <path d="M591 161v20m-10-10h20M186 37v16m-8-8h16" stroke="#d3b3f7" stroke-width="2"/>
+  </g>
+</svg>
